@@ -11,79 +11,17 @@ import os
 
 feriados_ambima = 'feriados_nacionais.xls'
 
-
-def date(tipo='datetime'):
-    date = datetime.now()
-    date = str(date.year) + '-' + str(date.month) + '-' + str(date.day)
-    if tipo == 'datetime':
-        return parser.parse(date)
-    else:
-        return date
-
-
-def parse_date(date):
-    hora = date.split('_')[1]
-    date = date.split('_')[0].split('-')
-
-    year = date[0]
-    month = date[1]
-    day = date[2]
-
-    if month[0] == '0':
-        month = month[1]
-    if day[0] == '0':
-        day = day[1]
-
-    final_date = year + '-' + month + '-' + day + '_' + hora
-    return final_date
-
-
-def data_papt_prod(delta_days=0, data=''):
-    '''
-    Para avancar o numero de dias, colocar delta_days > 0.
-    Para retroceder o numero de dias, colocar delta_days < 0.
-    :param delta_days: dias a serem descontados
-    :return: data no formato dd/mm/aaaa
-    '''
-    if data == '':
-        now = datetime.now()
-        day = (now + timedelta(days=delta_days)).day
-        month = (now + timedelta(days=delta_days)).month
-        year = (now + timedelta(days=delta_days)).year
-
-    else:
-        if isinstance(data, str):
-            data = data.split('-')
-            year = data[0]
-            month = data[1]
-            day = data[2]
-        else:
-            day = data.day
-            month = data.month
-            year = data.year
-
-    day = str(day)
-    month = str(month)
-    year = str(year)
-
-    if int(day) < 10:
-        day = '0' + day
-
-    if int(month) < 10:
-        month = '0' + month
-
-    date = day + month + year[-2:]
-    return date
-
-
 def feriado_check():
+    """
+    Sai do programa caso seja um feriado.
+    """
     df = pd.read_excel(feriados_ambima).set_index('Data')
     today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
 
     if today in df.index:
         return sys.exit()  # Exception('Feriado')
     else:
-        return 'Nao eh feriado'
+        return 'Not a Holiday'
 
 
 def numero_feriados(data_vencimento):
@@ -212,82 +150,6 @@ def dias_uteis(data_vencimento, data_inicial=''):
         return 'nan'
 
 
-def data_log(delta_days=0, data=''):
-    '''
-    Para avancar o numero de dias, colocar delta_days > 0.
-    Para retroceder o numero de dias, colocar delta_days < 0.
-    :param delta_days: dias a serem descontados
-    :return: data no formato dd/mm/aaaa
-    '''
-    if data == '':
-        now = datetime.now()
-        day = (now + timedelta(days=delta_days)).day
-        month = (now + timedelta(days=delta_days)).month
-        year = (now + timedelta(days=delta_days)).year
-
-    else:
-        if isinstance(data, str):
-            data = data.split('-')
-            year = data[0]
-            month = data[1]
-            day = data[2]
-        else:
-            day = data.day
-            month = data.month
-            year = data.year
-
-    day = str(day)
-    month = str(month)
-    year = str(year)
-
-    if int(day) < 10:
-        day = '0' + day
-
-    if int(month) < 10:
-        month = '0' + month
-
-    date = year + '-' + month + '-' + day
-    return date
-
-
-def data_pesc(delta_days=0, data=''):
-    '''
-    Para avancar o numero de dias, colocar delta_days > 0.
-    Para retroceder o numero de dias, colocar delta_days < 0.
-    :param delta_days: dias a serem descontados
-    :return: data no formato dd/mm/aaaa
-    '''
-    if data == '':
-        now = datetime.now()
-        day = (now + timedelta(days=delta_days)).day
-        month = (now + timedelta(days=delta_days)).month
-        year = (now + timedelta(days=delta_days)).year
-
-    else:
-        if isinstance(data, str):
-            data = data.split('-')
-            year = data[0]
-            month = data[1]
-            day = data[2]
-        else:
-            day = data.day
-            month = data.month
-            year = data.year
-
-    day = str(day)
-    month = str(month)
-    year = str(year)
-
-    if int(day) < 10:
-        day = '0' + day
-
-    if int(month) < 10:
-        month = '0' + month
-
-    date = year + month + day
-    return date
-
-
 def padrao_brasileiro_datas(delta_days=0, data='', zero_antecendo=True):
     '''
     Para avancar o numero de dias, colocar delta_days > 0.
@@ -370,63 +232,3 @@ def retroceder_ano(data='', complemento=True):
         lastYear = str(lastYear.year) + "-" + str(lastYear.month) + "-" + str(lastYear.day)
         return lastYear
 
-
-def data_britech(delta_days=0, data=''):
-    '''
-    Para avancar o numero de dias, colocar delta_days > 0.
-    Para retroceder o numero de dias, colocar delta_days < 0.
-    :param delta_days: dias a serem descontados
-    :return: data no formato dd/mm/aaaa
-    '''
-    if isinstance(data='', datetime=''):
-        if data == '':
-            now = datetime.now()
-            day = (now + timedelta(days=delta_days)).day
-            month = (now + timedelta(days=delta_days)).month
-            year = (now + timedelta(days=delta_days)).year
-
-        else:
-            day = data.day
-            month = data.month
-            year = data.year
-
-        day = str(day)
-        month = str(month)
-        year = str(year)
-
-    elif isinstance(data, str):
-        if '-' in data:
-            data = data.split('-')
-            year = data[0]
-            month = data[1]
-            day = data[2]
-
-    if int(day) < 10:
-        day = '0' + day
-
-    if int(month) < 10:
-        month = '0' + month
-
-    date = month + '/' + day + '/' + year
-    return date
-
-
-def data_britech_2(data):
-    if isinstance(data, datetime):
-        day = str(data.day)
-        month = str(data.month)
-        year = str(data.year)
-
-        if day[0] == '0':
-            day = day[1]
-
-        if month[0] == '0':
-            month = month[1]
-
-        data = year + '-' + month + '-' + day
-        return data
-
-
-if __name__ == '__main__':
-    pass
-    #print today(tipo='str')
